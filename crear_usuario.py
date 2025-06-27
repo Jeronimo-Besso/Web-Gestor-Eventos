@@ -6,10 +6,10 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 db = SessionLocal()
 
 nuevo_usuario = Usuario(
-    nombre="Cliente",
-    email="cliente@hotmail.com",
+    nombre="Administrador",
+    email="administrador@hotmail.com",
     hashed_password=pwd_context.hash("1234"),
-    rol="Cliente",
+    rol="Administrador",
 )
 
 db.add(nuevo_usuario)

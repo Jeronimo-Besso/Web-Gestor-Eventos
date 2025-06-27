@@ -1,0 +1,138 @@
+const API_EVENTOS = "http://localhost:8000/eventos";
+const API_INSCRIPCIONES = "http://localhost:8000/inscripciones";
+const token = localStorage.getItem("token");
+let inscripcionesActivas = [];
+
+// Redirige si no hay token
+if (!token) {
+  alert("No estás logueado. Redirigiendo...");
+  window.location.href = "login.html";
+}
+
+// Cargar eventos disponibles (excluyendo los ya inscritos)
+async function cargarEventos() {
+  const res = await fetch(API_EVENTOS);
+  const eventos = await res.json();
+
+  const lista = document.getElementById("eventosDisponibles");
+  lista.innerHTML = "";
+
+  eventos.forEach((evento) => {
+    const yaInscripto = inscripcionesActivas.some(
+      (insc) => insc.evento && insc.evento.id === evento.id
+    );
+    if (yaInscripto) return;
+
+    const item = document.createElement("li");
+    item.innerHTML = `
+      <div>
+        <strong>${evento.nombre}</strong>
+        <p>${evento.descripcion}</p>
+        <p><small>Del ${evento.fecha_inicio} al ${evento.fecha_fin}</small></p>
+        <button onclick="inscribirse(${evento.id})">Inscribirme</button>
+      </div>
+    `;
+    lista.appendChild(item);
+  });
+}
+
+// Inscribirse a un evento
+async function inscribirse(eventoId) {
+  try {
+    const res = await fetch(API_INSCRIPCIONES, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ evento_id: Number(eventoId) }),
+    });
+
+    let data = null;
+    try {
+      data = await res.json();
+    } catch (err) {}
+
+    if (!res.ok) {
+      alert(data?.detail || "No se pudo inscribir.");
+    } else {
+      alert(data?.detail || "¡Inscripción exitosa!");
+      refrescarUI();
+    }
+  } catch (error) {
+    console.error("Error al inscribirse:", error);
+    alert("Error de conexión al inscribirse.");
+  }
+}
+
+// Desinscribirse de un evento
+async function desinscribirse(eventoId) {
+  if (!confirm("¿Seguro que querés desinscribirte?")) return;
+
+  try {
+    const res = await fetch(`${API_INSCRIPCIONES}/${eventoId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    let data = null;
+    try {
+      data = await res.json();
+    } catch (err) {}
+
+    if (!res.ok) {
+      alert(data?.detail || "No se pudo desinscribir.");
+    } else {
+      alert(data?.detail || "Desinscripción exitosa.");
+      refrescarUI();
+    }
+  } catch (error) {
+    console.error("Error al desinscribirse:", error);
+    alert("Error de conexión al desinscribirse.");
+  }
+}
+
+// Cargar inscripciones activas
+async function cargarInscripcionesActivas() {
+  const res = await fetch(`${API_INSCRIPCIONES}/activas`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  const data = await res.json();
+
+  if (!Array.isArray(data)) {
+    console.error("No llegó una lista:", data);
+    alert(data.detail || "Error al cargar inscripciones.");
+    return;
+  }
+
+  inscripcionesActivas = data;
+
+  const contenedor = document.getElementById("inscripcionesActivas");
+  contenedor.innerHTML = "";
+
+  data.forEach((insc) => {
+    if (!insc.evento) return;
+
+    const item = document.createElement("li");
+    item.innerHTML = `
+      <div>
+        <strong>${insc.evento.nombre}</strong>
+        <p><small>Del ${insc.evento.fecha_inicio} al ${insc.evento.fecha_fin}</small></p>
+        <button onclick="desinscribirse(${insc.evento.id})">Desinscribirse</button>
+      </div>
+    `;
+    contenedor.appendChild(item);
+  });
+}
+
+// Refrescar UI completa
+function refrescarUI() {
+  cargarInscripcionesActivas();
+  cargarEventos();
+}
+
+// Inicializar al entrar
+refrescarUI();

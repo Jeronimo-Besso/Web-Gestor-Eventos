@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eventos</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h1>📅 Eventos</h1>
+
+        <ul id="listaEventos"></ul>
+    </div>
+    <h3 class="titulo-form">Formulario para crear Eventos</h3>
+    <div class="container-form">
+        <form id="eventoForm">
+            <input type="text" id="nombre" placeholder="Nombre del evento" required />
+            <input type="text" id="descripcion" placeholder="Descripción" required />
+            <input type="text" id="lugar" placeholder="Lugar del evento" required />
+            <input type="date" id="fecha_inicio" required />
+            <input type="date" id="fecha_fin" required />
+            <input type="number" id="cupos" placeholder="Cupos" required />
+            <input type="number" id="categoria_id" placeholder="ID de Categoría" required />
+            <button id="boton" type="submit">Crear evento</button>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

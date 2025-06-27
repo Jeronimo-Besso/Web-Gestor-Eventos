@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login - Eventos</title>
+    <style>
+        /* Reset y base */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #6b73ff, #000dff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .login-container {
+            background: rgba(255 255 255 / 0.1);
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgb(0 0 0 / 0.3);
+            width: 320px;
+        }
+
+        h2 {
+            margin-bottom: 24px;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 1.2px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #dde1f0;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: none;
+            margin-bottom: 20px;
+            font-size: 16px;
+            outline: none;
+            background: rgba(255 255 255 / 0.15);
+            color: #fff;
+            transition: background 0.3s;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            background: rgba(255 255 255 / 0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            font-weight: 700;
+            font-size: 16px;
+            background: #ff4b2b;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background: #ff3a1a;
+        }
+
+        .error-message {
+            margin-top: 12px;
+            color: #ffb3b3;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .success-message {
+            margin-top: 12px;
+            color: #b3ffb3;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <h2>Iniciar sesión</h2>
+        <form id="loginForm">
+            <label for="email">Correo electrónico</label>
+            <input id="email" type="email" placeholder="tu@email.com" required autocomplete="username" />
+            <label for="password">Contraseña</label>
+            <input id="password" type="password" placeholder="********" required autocomplete="current-password" />
+            <button type="submit">Entrar</button>
+            <div id="message" class="error-message" style="display:none;"></div>
+        </form>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:8000/auth"
+        const form = document.getElementById("loginForm");
+        const messageDiv = document.getElementById("message");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            messageDiv.style.display = "none";
+            messageDiv.textContent = "";
+
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+
+            try {
+                const res = await fetch("http://localhost:8000/auth/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams({
+                        username: email,
+                        password: password,
+                    }),
+                });
+
+                if (!res.ok) {
+                    const errData = await res.json().catch(() => null);
+                    let detail = errData?.detail || "Error desconocido";
+                    throw new Error(detail);
+                }
+
+                const data = await res.json();
+
+                // Guardar token en localStorage
+                localStorage.setItem("token", data.access_token);
+                // Mensaje de éxito
+                messageDiv.className = "success-message";
+                messageDiv.textContent = "Login exitoso! Ya podés crear eventos.";
+                messageDiv.style.display = "block";
+
+                //agregar condicion para que verifique si es o no admin
+                //esta funcion busca hacer eso , abajo esta la ida al
+                let userRol = ''
+                verificarRol()
+                async function verificarRol() {
+                    const res = await fetch(`${API_URL}/${email}`);
+                    if (!res.ok) {
+                        const err = await res.json().catch(() => ({ detail: "Error desconocido" }));
+                        alert("Error: " + err.detail);
+                    } else {
+                        //aca hay q tomar el return de el endpoint, y ver para donde redirigir
+                        const data = await res.json();
+                        userRol = data.rol
+                        console.log(userRol)
+                        if (userRol === 'Administrador') {
+                            window.location.href = 'http://127.0.0.1:5500/app/frontend/index.html';
+
+                        } else {
+                            window.location.href = 'http://127.0.0.1:5500/app/frontend/usuario.html';
+                        }
+
+                    }
+                    //esto manda al html
+
+                }
+                // Opcional: limpiar formulario
+                form.reset();
+
+                // Aquí podés redirigir o mostrar otra sección
+
+            } catch (error) {
+                messageDiv.className = "error-message";
+                messageDiv.textContent = "Error: " + error.message;
+                messageDiv.style.display = "block";
+            }
+        });
+    </script>
+
+</body>
+
+</html>

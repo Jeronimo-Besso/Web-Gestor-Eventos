@@ -23,11 +23,21 @@
             <input type="date" id="fecha_inicio" required />
             <input type="date" id="fecha_fin" required />
             <input type="number" id="cupos" placeholder="Cupos" required />
-            <input type="number" id="categoria_id" placeholder="ID de Categoría" required />
+            <input type="number" id="categoria_id" placeholder="ID de Categoría(Recorda que debes crearla si no existe)"
+                required />
             <button id="boton" type="submit">Crear evento</button>
         </form>
     </div>
-    <script src="script.js"></script>
+    <div class="container-categorias">
+        <h2>Categorias</h2>
+        <form id="categoria_form">
+            <input type="text" id="nombre_categoria" placeholder="Inserte el nombre de la Categoria" />
+            <input type="text" id="descripcion_categoria" placeholder="Inserte la descripcion de la Categoria" />
+            <button id="boton-categoria" type="submit">Crear Categoria</button>
+        </form>
+    </div>
 </body>
+<script src="script.js"></script>
+<script src="categoria.js"></script>
 
 </html>

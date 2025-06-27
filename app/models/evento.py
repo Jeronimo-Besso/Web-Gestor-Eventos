@@ -17,3 +17,17 @@ class Evento(Base):
 
     categoria = relationship("Categoria", back_populates="eventos")
     inscripciones = relationship("Inscripcion", back_populates="evento")
+
+    def inscribir(self):
+        if self.cupos and self.cupos > 0:
+            # print("cupos antes de inscripcion", self.cupos)
+            self.cupos -= 1
+            # print("cupos despues de inscripcion", self.cupos)
+        else:
+            raise ValueError("No hay cupos disponibles para este evento.")
+
+    def desinscribir(self):
+        # no debo hacer validacion para esto, porque si YA esta inscripto hay cupon para desinscribirse
+        # print("cupos antes de desinscribirse", self.cupos)
+        self.cupos += 1
+        # print("cuppos despues de desinscribirse", self.cupos)

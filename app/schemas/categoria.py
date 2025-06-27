@@ -7,10 +7,6 @@ class CategoriaBase(BaseModel):
     descripcion: Optional[str]
 
 
-class CategoriaCreate(CategoriaBase):
-    pass
-
-
 class CategoriaResponse(CategoriaBase):
     id: int
 

@@ -6,7 +6,7 @@ const token = localStorage.getItem("token");
 // Redirigir si no hay token
 if (!token) {
   alert("No estás logueado. Redirigiendo al login...");
-  window.location.href = "login.html";
+  window.location.href = "http://127.0.0.1:5500/app/frontend/lofin.html";
 }
 
 // Cargar eventos

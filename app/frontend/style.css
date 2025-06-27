@@ -88,3 +88,14 @@ li button {
 li .editar{
   background-color: orange;
 }
+.container-categorias{
+  width: 80%;
+  height: 30vh;
+  border-top: groove 1px rgba(0, 0, 0, 0.334);
+  margin: auto;
+  text-align: center;
+}
+.categoria-form{
+  width: 50%;
+  margin: auto;
+}

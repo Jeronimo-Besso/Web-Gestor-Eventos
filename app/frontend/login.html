@@ -144,7 +144,7 @@
 
                 // Guardar token en localStorage
                 localStorage.setItem("token", data.access_token);
-                // Mensaje de éxito
+                
                 messageDiv.className = "success-message";
                 messageDiv.textContent = "Login exitoso! Ya podés crear eventos.";
                 messageDiv.style.display = "block";
@@ -174,10 +174,8 @@
                     //esto manda al html
 
                 }
-                // Opcional: limpiar formulario
                 form.reset();
 
-                // Aquí podés redirigir o mostrar otra sección
 
             } catch (error) {
                 messageDiv.className = "error-message";

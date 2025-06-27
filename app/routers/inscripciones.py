@@ -12,6 +12,7 @@ from app.schemas.inscripcion import (
 )
 from app.utils.dependencies import get_current_user
 from app.models.usuario import Usuario
+from app.models.evento import Evento
 
 router = APIRouter(prefix="/inscripciones", tags=["Inscripciones"])
 
@@ -23,7 +24,7 @@ def inscribirse(
     db: Session = Depends(get_db),
     usuario: Usuario = Depends(get_current_user),
 ):
-    #ACA FALTA SUMAR A CUPOS DE EVENTO CUANDO SEA NECESARIO
+    # ACA FALTA SUMAR A CUPOS DE EVENTO CUANDO SEA NECESARIO
     print("Usuario:", usuario)
     print("Datos:", datos)
     evento = db.query(Evento).filter(Evento.id == datos.evento_id).first()
@@ -43,6 +44,10 @@ def inscribirse(
     inscritos = db.query(Inscripcion).filter_by(evento_id=evento.id).count()
     if inscritos >= evento.cupos:
         raise HTTPException(status_code=400, detail="No hay cupos disponibles")
+
+    # aca debo hacer un uodate en eventos y restarle 1
+    evento.inscribir()
+    ####3
 
     inscripcion = Inscripcion(
         evento_id=evento.id, usuario_id=usuario.id, fecha_inscripcion=date.today()
@@ -82,10 +87,12 @@ def desinscribirse(
         .filter_by(evento_id=evento_id, usuario_id=usuario.id)
         .first()
     )
-
+    evento_obj = db.query(Evento).filter_by(id=evento_id).first()
+    # esta func deberia devolver el evento que tenga ese ID
+    evento_obj.desinscribir()
+    # y aca deberia ejecutar desinscribir
     if not inscripcion:
         raise HTTPException(status_code=404, detail="No estás inscripto en ese evento")
-
     db.delete(inscripcion)
     db.commit()
     return {"detail": "Desinscripción exitosa"}

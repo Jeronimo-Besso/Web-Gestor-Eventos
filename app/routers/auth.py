@@ -7,6 +7,8 @@ from app.database import get_db
 from app.models.usuario import Usuario
 from app.services.auth import create_access_token
 from passlib.context import CryptContext
+from app.schemas.usuario import UsuarioCreate
+
 
 SECRET_KEY = "una_clave_secreta_segura"
 ALGORITHM = "HS256"
@@ -52,3 +54,21 @@ def checkRol(email: str, db: Session = Depends(get_db)):
     else:
         print(user.rol)
         return {"rol": user.rol}
+
+
+@router.post("/registro")
+def registrar_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)):
+    usuario_existente = db.query(Usuario).filter(Usuario.email == usuario.email).first()
+    if usuario_existente:
+        raise HTTPException(status_code=400, detail="El correo ya está registrado")
+    if usuario.rol not in ("Administrador", "Cliente"):
+        raise HTTPException(status_code=400, detail="Rol desconocido")
+    nuevo_usuario = Usuario(
+        email=usuario.email,
+        hashed_password=pwd_context.hash(usuario.contraseña),
+        rol=usuario.rol,
+        nombre=usuario.nombre,  # o podés agregar un campo extra si querés que lo ingrese
+    )
+    db.add(nuevo_usuario)
+    db.commit()
+    return {"mensaje": "Usuario registrado correctamente"}

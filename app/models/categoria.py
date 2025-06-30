@@ -9,5 +9,4 @@ class Categoria(Base):
     id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String(100), nullable=False)  # Especificamos longitud
     descripcion = Column(String(255))  # Longitud sugerida para textos breves
-
     eventos = relationship("Evento", back_populates="categoria")

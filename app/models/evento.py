@@ -13,8 +13,11 @@ class Evento(Base):
     fecha_fin = Column(Date)
     lugar = Column(String(150))  # Lugar del evento
     cupos = Column(Integer)
-    categoria_id = Column(Integer, ForeignKey("categorias.id"))
-
+    categoria_id = Column(
+        Integer,
+        ForeignKey("categorias.id", ondelete="CASCADE"),
+        nullable=False,  # TIENE CASCADE, PORQUE,PORQUE SI BORRAS UNA CATEGORIA Y EL EVENTO YA TENIA ESA CATEGORIA SALE ERROR, ENTONCES SI BORRAS UNA CATEGORIA BORRAS EL EVENTO
+    )
     categoria = relationship("Categoria", back_populates="eventos")
     inscripciones = relationship("Inscripcion", back_populates="evento")
 

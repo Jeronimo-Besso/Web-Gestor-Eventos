@@ -172,10 +172,54 @@ function mostrarHistorial(historial) {
   });
 }
 
+function cargarHistorial() {
+  fetch("http://localhost:8000/inscripciones/historial", {
+    method: "GET",
+    headers: { "Authorization": `Bearer ${token}` }
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Error al obtener historial");
+      return res.json();
+    })
+    .then(historial => mostrarHistorial(historial))
+    .catch(error => {
+      console.error(error);
+      alert("Hubo un error al cargar el historial");
+    });
+}
+
+
+const headers = { Authorization: `Bearer ${token}` };
+
+fetch("http://localhost:8000/dashboard/total-eventos", { headers })
+  .then(res => res.json())
+  .then(data => document.getElementById("totalEventos").textContent = data.total_eventos);
+
+fetch("http://localhost:8000/dashboard/inscripciones-activas", { headers })
+  .then(res => res.json())
+  .then(data => document.getElementById("inscripcionesActivasNav").textContent = data.inscripciones_activas);
+
+fetch("http://localhost:8000/dashboard/promedio-inscriptos", { headers })
+  .then(res => res.json())
+  .then(data => document.getElementById("promedio").textContent = data.promedio_inscriptos_por_evento);
+
+fetch("http://localhost:8000/dashboard/evento-mas-inscripciones", { headers })
+  .then(res => res.json())
+  .then(data => {
+    if (data.nombre) {
+      document.getElementById("masPopular").textContent = data.nombre;
+      document.getElementById("cantPopular").textContent = data.inscripciones;
+    } else {
+      document.getElementById("masPopular").textContent = "Ninguno";
+      document.getElementById("cantPopular").textContent = "0";
+    }
+  });
+
 // Refrescar UI completa
 function refrescarUI() {
   cargarInscripcionesActivas();
   cargarEventos();
+  cargarHistorial();
 }
 
 // Inicializar al entrar

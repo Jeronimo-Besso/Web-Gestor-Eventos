@@ -100,3 +100,35 @@ th, td {
 th {
   background-color: #f2f2f2;
 }
+
+nav {
+  display: flex;
+  gap: 20px;
+  padding: 5px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+
+}
+
+nav.dashboard {
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  color: #000000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+nav.dashboard ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+}
+
+nav.dashboard li {
+  font-size: 0.95rem;
+  margin: 0;
+  padding: 5px
+}

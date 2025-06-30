@@ -5,19 +5,18 @@ from datetime import date
 from app.database import get_db
 from app.models.evento import Evento
 from app.models.inscripcion import Inscripcion
-from app.utils.dependencies import require_admin
 
 router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
 
 
 @router.get("/total-eventos")
-def total_eventos(db: Session = Depends(get_db), _=Depends(require_admin)):
+def total_eventos(db: Session = Depends(get_db)):
     return {"total_eventos": db.query(Evento).count()}
 
 
 @router.get("/inscripciones-activas")
 def total_inscripciones_activas(
-    db: Session = Depends(get_db), _=Depends(require_admin)
+    db: Session = Depends(get_db)
 ):
     hoy = date.today()
     total = db.query(Inscripcion).join(Evento).filter(Evento.fecha_fin >= hoy).count()
@@ -25,7 +24,7 @@ def total_inscripciones_activas(
 
 
 @router.get("/promedio-inscriptos")
-def promedio_inscriptos(db: Session = Depends(get_db), _=Depends(require_admin)):
+def promedio_inscriptos(db: Session = Depends(get_db)):
     total_eventos = db.query(Evento).count()
     total_inscriptos = db.query(Inscripcion).count()
     promedio = total_inscriptos / total_eventos if total_eventos else 0
@@ -33,7 +32,7 @@ def promedio_inscriptos(db: Session = Depends(get_db), _=Depends(require_admin))
 
 
 @router.get("/evento-mas-inscripciones")
-def evento_mas_inscripciones(db: Session = Depends(get_db), _=Depends(require_admin)):
+def evento_mas_inscripciones(db: Session = Depends(get_db)):
     resultado = (
         db.query(Inscripcion.evento_id, func.count(Inscripcion.id).label("cantidad"))
         .group_by(Inscripcion.evento_id)

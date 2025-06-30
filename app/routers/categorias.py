@@ -18,13 +18,13 @@ def crear_categoria(
 ):
     nueva = Categoria(nombre=data.nombre, descripcion=data.descripcion)
     db.add(nueva)
-    db.commit() 
+    db.commit()
     db.refresh(nueva)
     return nueva
 
 
 # Listar todas las categorías
-@router.get("/", response_model=List[CategoriaResponse])
+@router.get("/getCategorias", response_model=List[CategoriaResponse])
 def listar_categorias(db: Session = Depends(get_db)):
     return db.query(Categoria).all()
 

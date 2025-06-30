@@ -128,6 +128,50 @@ async function cargarInscripcionesActivas() {
   });
 }
 
+fetch("http://localhost:8000/inscripciones/historial", {
+  method: "GET",
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+})
+  .then(res => {
+    if (!res.ok) throw new Error("Error al obtener historial");
+    return res.json();
+  })
+  .then(historial => mostrarHistorial(historial))
+  .catch(error => {
+    console.error(error);
+    alert("Hubo un error al cargar el historial");
+  });
+
+function mostrarHistorial(historial) {
+  const tbody = document.querySelector("#tablaHistorial tbody");
+  tbody.innerHTML = ""; // Limpiar por si ya había datos
+
+  historial.forEach(inscripcion => {
+    const tr = document.createElement("tr");
+
+    const tdEvento = document.createElement("td");
+    tdEvento.textContent = inscripcion.evento.nombre;
+
+    const tdInicio = document.createElement("td");
+    tdInicio.textContent = inscripcion.evento.fecha_inicio;
+
+    const tdFin = document.createElement("td");
+    tdFin.textContent = inscripcion.evento.fecha_fin;
+
+    const tdFechaInscripcion = document.createElement("td");
+    tdFechaInscripcion.textContent = inscripcion.fecha_inscripcion;
+
+    tr.appendChild(tdEvento);
+    tr.appendChild(tdInicio);
+    tr.appendChild(tdFin);
+    tr.appendChild(tdFechaInscripcion);
+
+    tbody.appendChild(tr);
+  });
+}
+
 // Refrescar UI completa
 function refrescarUI() {
   cargarInscripcionesActivas();

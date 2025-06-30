@@ -3,6 +3,7 @@ anyio==4.9.0
 bcrypt==4.0.1
 click==8.2.1
 colorama==0.4.6
+cryptography==45.0.4
 ecdsa==0.19.1
 fastapi==0.115.13
 greenlet==3.2.3

@@ -76,6 +76,20 @@ def getActivas(
     return insc_activas
 
 
+@router.get("/historial", response_model=List[InscripcionConEventoResponse])
+def historial_inscripciones(
+    db: Session = Depends(get_db), usuario: Usuario = Depends(get_current_user)
+):
+    historial = (
+        db.query(Inscripcion)
+        .join(Inscripcion.evento)  # Incluye datos del evento
+        .filter(Inscripcion.usuario_id == usuario.id)
+        .order_by(Inscripcion.fecha_inscripcion.desc())
+        .all()
+    )
+    return historial
+
+
 @router.delete("/{evento_id}")
 def desinscribirse(
     evento_id: int,

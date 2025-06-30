@@ -15,7 +15,7 @@ class EventoResponse(BaseModel):
     fecha_fin: date
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 # ✅ Respuesta del POST: inscripción simple, sin datos del evento
@@ -25,7 +25,7 @@ class InscripcionResponse(BaseModel):
     fecha_inscripcion: date
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 # ✅ Respuesta para GETs enriquecidos: incluye el objeto evento completo
@@ -35,4 +35,4 @@ class InscripcionConEventoResponse(BaseModel):
     evento: EventoResponse
 
     class Config:
-        orm_mode = True
+        from_attributes = True

@@ -98,10 +98,6 @@ Ver el historial de inscripciones.
 
 `💡 Está pensado para integrarse con la API a través de fetch y JWT en headers.`
 
-## 🧑‍💻 Autores
-
-Este proyecto fue desarrollado como Trabajo Práctico Integrador para la materia **Laboratorio IV** – Tecnicatura Universitaria en Programación (UTN).
-
 ### 👥 Integrantes
 
 - Jerónimo Besso

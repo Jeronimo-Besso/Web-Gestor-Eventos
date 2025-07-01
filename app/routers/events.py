@@ -5,6 +5,9 @@ from app.database import get_db
 from app.models.evento import Evento
 from app.schemas.evento import EventoCreate, EventoResponse
 from app.utils.dependencies import get_current_user, require_admin
+from sqlalchemy import or_
+from sqlalchemy.orm import joinedload
+from app.models.categoria import Categoria
 
 router = APIRouter(prefix="/eventos", tags=["Eventos"])
 
@@ -12,7 +15,12 @@ router = APIRouter(prefix="/eventos", tags=["Eventos"])
 # Obtener todos los eventos disponibles
 @router.get("/", response_model=List[EventoResponse])
 def listar_eventos(db: Session = Depends(get_db)):
-    return db.query(Evento).all()
+    return (
+        db.query(Evento)
+        .options(joinedload(Evento.categoria))
+        .filter(Evento.categoria_id != None)
+        .all()
+    )
 
 
 # Buscar eventos por nombre o descripción
@@ -20,7 +28,14 @@ def listar_eventos(db: Session = Depends(get_db)):
 def buscar_eventos(q: str, db: Session = Depends(get_db)):
     resultados = (
         db.query(Evento)
-        .filter((Evento.nombre.ilike(f"%{q}%")) | (Evento.descripcion.ilike(f"%{q}%")))
+        .join(Evento.categoria)  # join a la tabla Categoria
+        .options(joinedload(Evento.categoria))  # eager load para respuesta
+        .filter(
+            or_(
+                Evento.nombre.ilike(f"%{q}%"),
+                Categoria.nombre.ilike(f"%{q}%"),  # filtra por nombre de la categoría
+            )
+        )
         .all()
     )
     return resultados

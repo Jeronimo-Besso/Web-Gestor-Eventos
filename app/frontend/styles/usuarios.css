@@ -145,3 +145,18 @@ nav.dashboard li {
 nav h3 {
   color: #fff;
 }
+
+.filtro {
+  display: none;
+}
+
+#buscador {
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.contenedorBuscador {
+  display: flex;
+  margin-bottom: 16px;
+}

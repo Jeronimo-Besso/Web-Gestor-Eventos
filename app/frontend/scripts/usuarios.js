@@ -25,9 +25,10 @@ async function cargarEventos() {
 
     const item = document.createElement("li");
     item.innerHTML = `
-      <div>
+      <div class="evento">
         <strong>${evento.nombre}</strong>
         <p>${evento.descripcion}</p>
+        <p>${evento.categoria?.nombre || "Sin Categoria"}</p>
         <p><small>Del ${evento.fecha_inicio} al ${evento.fecha_fin}</small></p>
         <button onclick="inscribirse(${evento.id})">Inscribirme</button>
       </div>

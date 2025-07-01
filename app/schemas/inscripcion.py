@@ -2,12 +2,12 @@ from pydantic import BaseModel
 from datetime import date
 
 
-# 🟢 Modelo para recibir datos cuando el usuario se inscribe
+# Modelo para recibir datos cuando el usuario se inscribe
 class InscripcionCreate(BaseModel):
     evento_id: int
 
 
-# 🟢 Modelo base del evento (usado dentro de respuestas)
+# Modelo base del evento (usado dentro de respuestas)
 class EventoResponse(BaseModel):
     id: int
     nombre: str
@@ -18,7 +18,7 @@ class EventoResponse(BaseModel):
         from_attributes = True
 
 
-# ✅ Respuesta del POST: inscripción simple, sin datos del evento
+# Respuesta del POST: inscripción simple, sin datos del evento
 class InscripcionResponse(BaseModel):
     id: int
     evento_id: int
@@ -28,7 +28,7 @@ class InscripcionResponse(BaseModel):
         from_attributes = True
 
 
-# ✅ Respuesta para GETs enriquecidos: incluye el objeto evento completo
+# Respuesta para GETs enriquecidos: incluye el objeto evento completo
 class InscripcionConEventoResponse(BaseModel):
     id: int
     fecha_inscripcion: date

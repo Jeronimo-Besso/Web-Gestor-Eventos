@@ -27,18 +27,16 @@ app.add_middleware(ErrorHandlerMiddleware)
 origins = [
     "http://localhost:5500",
     "http://127.0.0.1:5500",
-    # agregá otros orígenes si es necesario
 ]
 # Configuración CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # o ["*"] para permitir todos (no recomendado en producción)
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Crear las tablas automáticamente (solo para dev)
 Base.metadata.create_all(bind=engine)
 # Registrar routers
 app.include_router(auth.router)

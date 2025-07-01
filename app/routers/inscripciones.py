@@ -47,7 +47,6 @@ def inscribirse(
 
     # aca debo hacer un uodate en eventos y restarle 1
     evento.inscribir()
-    ####3
 
     inscripcion = Inscripcion(
         evento_id=evento.id, usuario_id=usuario.id, fecha_inscripcion=date.today()

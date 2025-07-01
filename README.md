@@ -62,9 +62,9 @@ cd Pagina-Eventos
 
 python -m venv venv
 
-source env/bin/activate    # Linux/macOS
+source venv/bin/activate    # Linux/macOS
 
-env\Scripts\activate    # Windows
+venv\Scripts\activate    # Windows
 
 ### 3. Instalar dependencias
 

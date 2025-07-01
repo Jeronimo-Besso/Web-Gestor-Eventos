@@ -11,7 +11,7 @@ router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
 
 @router.get("/total-eventos")
 def total_eventos(db: Session = Depends(get_db)):
-    return {"total_eventos": db.query(Evento).count()}
+    return {"total_eventos": db.query(Evento).filter(Evento.categoria_id != None).count()}
 
 
 @router.get("/inscripciones-activas")
@@ -35,6 +35,8 @@ def promedio_inscriptos(db: Session = Depends(get_db)):
 def evento_mas_inscripciones(db: Session = Depends(get_db)):
     resultado = (
         db.query(Inscripcion.evento_id, func.count(Inscripcion.id).label("cantidad"))
+        .join(Evento)
+        .filter(Evento.categoria_id != None)
         .group_by(Inscripcion.evento_id)
         .order_by(func.count(Inscripcion.id).desc())
         .first()

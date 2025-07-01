@@ -19,7 +19,7 @@ class EventoBase(BaseModel):
     lugar: str
     cupos: int
     categoria_id: Optional[int]
-    categoria: Optional[CategoriaRespose]
+    # categoria: Optional[CategoriaRespose]
 
 
 class EventoCreate(EventoBase):

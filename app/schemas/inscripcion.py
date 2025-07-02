@@ -36,3 +36,13 @@ class InscripcionConEventoResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class InscripcionHistorial(BaseModel):
+    evento_nombre: str
+    evento_fecha_inicio: date
+    evento_fecha_fin: date
+    fecha_inscripcion: date
+
+    class Config:
+        from_attributes = True

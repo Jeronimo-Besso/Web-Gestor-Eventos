@@ -153,13 +153,13 @@ function mostrarHistorial(historial) {
     const tr = document.createElement("tr");
 
     const tdEvento = document.createElement("td");
-    tdEvento.textContent = inscripcion.evento.nombre;
+    tdEvento.textContent = inscripcion.evento_nombre;
 
     const tdInicio = document.createElement("td");
-    tdInicio.textContent = inscripcion.evento.fecha_inicio;
+    tdInicio.textContent = inscripcion.evento_fecha_inicio;
 
     const tdFin = document.createElement("td");
-    tdFin.textContent = inscripcion.evento.fecha_fin;
+    tdFin.textContent = inscripcion.evento_fecha_fin;
 
     const tdFechaInscripcion = document.createElement("td");
     tdFechaInscripcion.textContent = inscripcion.fecha_inscripcion;

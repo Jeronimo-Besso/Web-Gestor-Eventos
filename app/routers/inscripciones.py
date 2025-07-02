@@ -49,7 +49,12 @@ def inscribirse(
     evento.inscribir()
 
     inscripcion = Inscripcion(
-        evento_id=evento.id, usuario_id=usuario.id, fecha_inscripcion=date.today()
+        evento_id=evento.id, 
+        usuario_id=usuario.id, 
+        fecha_inscripcion=date.today(),
+        evento_nombre=evento.nombre,
+        evento_fecha_inicio=evento.fecha_inicio,
+        evento_fecha_fin=evento.fecha_fin,
     )
     # debo disminuir aca el cupo del evento
     db.add(inscripcion)
@@ -81,7 +86,6 @@ def historial_inscripciones(
 ):
     historial = (
         db.query(Inscripcion)
-        .join(Inscripcion.evento)  # Incluye datos del evento
         .filter(Inscripcion.usuario_id == usuario.id)
         .order_by(Inscripcion.fecha_inscripcion.desc())
         .all()

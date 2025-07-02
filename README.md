@@ -79,6 +79,10 @@ DATABASE_URL=mysql+mysqlconnector://usuario:contraseña@localhost:3306/nombre_de
 
 `⚠️ Reemplazá usuario, contraseña y nombre_de_la_base con los datos reales de tu servidor MySQL.`
 
+### ⚙️ Agregar el primer usuario Administrador
+
+Ejecutar el archivo `crear_usuario.py` que se encuentra en la raíz del proyecto.
+
 ### 🚀 Ejecutar la aplicación
 
 uvicorn main:app --reload

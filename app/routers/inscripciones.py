@@ -42,8 +42,7 @@ def inscribirse(
         raise HTTPException(status_code=400, detail="Ya estás inscripto en este evento")
 
     # Verificar cupos
-    inscritos = db.query(Inscripcion).filter_by(evento_id=evento.id).count()
-    if inscritos >= evento.cupos:
+    if evento.cupos <= 0:
         raise HTTPException(status_code=400, detail="No hay cupos disponibles")
 
     # aca debo hacer un uodate en eventos y restarle 1
@@ -92,7 +91,12 @@ def historial_inscripciones(
         .order_by(Inscripcion.fecha_inscripcion.desc())
         .all()
     )
-    return historial
+
+    historial_filtrado = [
+        i for i in historial if i.evento_nombre and i.evento_fecha_inicio and i.evento_fecha_fin
+    ]
+
+    return historial_filtrado
 
 
 @router.delete("/{evento_id}")

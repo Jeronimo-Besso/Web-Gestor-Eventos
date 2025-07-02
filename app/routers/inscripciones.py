@@ -9,6 +9,7 @@ from app.schemas.inscripcion import (
     InscripcionCreate,
     InscripcionResponse,
     InscripcionConEventoResponse,
+    InscripcionHistorial
 )
 from app.utils.dependencies import get_current_user
 from app.models.usuario import Usuario
@@ -49,13 +50,14 @@ def inscribirse(
     evento.inscribir()
 
     inscripcion = Inscripcion(
-        evento_id=evento.id, 
-        usuario_id=usuario.id, 
-        fecha_inscripcion=date.today(),
-        evento_nombre=evento.nombre,
-        evento_fecha_inicio=evento.fecha_inicio,
-        evento_fecha_fin=evento.fecha_fin,
-    )
+    evento_id=evento.id,
+    usuario_id=usuario.id,
+    fecha_inscripcion=date.today(),
+
+    evento_nombre=evento.nombre,
+    evento_fecha_inicio=evento.fecha_inicio,
+    evento_fecha_fin=evento.fecha_fin,
+)
     # debo disminuir aca el cupo del evento
     db.add(inscripcion)
     db.commit()
@@ -80,7 +82,7 @@ def getActivas(
     return insc_activas
 
 
-@router.get("/historial", response_model=List[InscripcionConEventoResponse])
+@router.get("/historial", response_model=List[InscripcionHistorial])
 def historial_inscripciones(
     db: Session = Depends(get_db), usuario: Usuario = Depends(get_current_user)
 ):

@@ -18,7 +18,7 @@ async function cargarEventos() {
   lista.innerHTML = "";
 
   eventos.forEach((evento) => {
-    const yaInscripto = inscripcionesActivas.some(
+    const yaInscripto = inscripcionesActivas.some( //some devuelve True si al menos un elemento cumple la condición
       (insc) => insc.evento && insc.evento.id === evento.id
     );
     if (yaInscripto) return;
@@ -28,6 +28,7 @@ async function cargarEventos() {
       <div class="evento">
         <strong>${evento.nombre}</strong>
         <p>${evento.descripcion}</p>
+        <p>${evento.categoria?.nombre}</p>
         <p><small>Del ${evento.fecha_inicio} al ${evento.fecha_fin}</small></p>
         <button onclick="inscribirse(${evento.id})">Inscribirme</button>
       </div>
@@ -73,7 +74,7 @@ async function desinscribirse(eventoId) {
     const res = await fetch(`${API_INSCRIPCIONES}/${eventoId}`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`, // Asegurarse de enviar el token
       },
     });
 

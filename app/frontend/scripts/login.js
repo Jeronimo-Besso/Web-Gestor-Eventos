@@ -12,7 +12,7 @@ form.addEventListener("submit", async (e) => {
     try {
         const res = await fetch("http://localhost:8000/auth/login", {
             method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            headers: { "Content-Type": "application/x-www-form-urlencoded" }, //esto es importante para que el backend entienda el formato
             body: new URLSearchParams({
                 username: email,
                 password: password,
@@ -53,13 +53,13 @@ form.addEventListener("submit", async (e) => {
                 } else {
                     window.location.href = 'http://127.0.0.1:5500/app/frontend/usuario.html';
                 }
-            //esto manda al html
+            //esto manda al html que toque
             }
         }
         form.reset();
     } catch (error) {
         messageDiv.className = "error-message";
         messageDiv.textContent = "Error: " + error.message;
-        messageDiv.style.display = "block";
+        messageDiv.style.display = "block"; //se muestra el mensaje de error
     }
 });

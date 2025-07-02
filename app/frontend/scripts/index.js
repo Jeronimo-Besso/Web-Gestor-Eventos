@@ -82,7 +82,7 @@ document.getElementById("eventoForm").addEventListener("submit", async (e) => {
   });
 
   if (res.ok) {
-    alert(idEditando ? "Evento actualizado!" : "Evento creado!");
+    alert(idEditando ? "Evento actualizado!" : "Evento creado!"); // aca verifica si fue post o put, y lanza el str
     document.getElementById("boton").textContent = "Crear Evento"
     document.getElementById("eventoForm").reset();
     delete document.getElementById("eventoForm").dataset.editando;

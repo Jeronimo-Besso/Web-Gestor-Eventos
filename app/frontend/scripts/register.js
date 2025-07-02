@@ -4,8 +4,6 @@ const API_URL_REGISTRO = "http://localhost:8000/auth";
 
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-
-
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     const rol = document.getElementById("rol").value;
@@ -14,7 +12,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     const res = await fetch(`${API_URL_REGISTRO}/registro`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nombre,email, contraseña: password, rol }),
+      body: JSON.stringify({ nombre,email, contraseña: password, rol }), // stringify convierte el objeto a JSON
     });
 
     const messageDiv = document.getElementById("message");
@@ -27,7 +25,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     }
 
     messageDiv.innerText = "Usuario registrado con éxito";
-    messageDiv.style.display = "block";
+    messageDiv.style.display = "block"; // para mostrar el mensaje de éxito
     window.location.href = "login.html";
   } catch (err) {
     console.error(err);

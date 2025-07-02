@@ -50,6 +50,10 @@ def crear_evento(
     db.add(nuevo_evento)
     db.commit()
     db.refresh(nuevo_evento)
+
+    db.refresh(nuevo_evento)
+    _ = nuevo_evento.categoria
+
     return nuevo_evento
 
 

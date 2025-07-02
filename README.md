@@ -26,7 +26,7 @@ Este proyecto consiste en una API REST desarrollada con **FastAPI** y **SQLAlche
 - `id`: int (PK)
 - `nombre`: str
 - `email`: str (único)
-- `contraseña`: str (encriptada)
+- `hashed_password`: str (encriptada)
 - `rol`: str (`Administrador` o `Cliente`)
 
 ### 📅 Eventos
@@ -42,7 +42,8 @@ Este proyecto consiste en una API REST desarrollada con **FastAPI** y **SQLAlche
 - `id`: int (PK)
 - `evento_id`: int (FK)
 - `usuario_id`: int (FK)
-- `fecha_inscripcion`: date
+- `fecha_inscripcion`, `evento_fecha_inicio`, `evento_fecha_fin`: date
+- `evento_nombre`: str
 
 ### 🗂️ Categorías
 

@@ -102,9 +102,3 @@ Ver las inscripciones activas.
 Ver el historial de inscripciones.
 
 `💡 Está pensado para integrarse con la API a través de fetch y JWT en headers.`
-
-### 👥 Integrantes
-
-- Jerónimo Besso
-- Gaspar Cavallero
-- Camilo Ciccioli
